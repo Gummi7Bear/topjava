@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -10,7 +12,7 @@ import java.util.List;
 //хранилище завтраков
 public class MealsRepository {
     private static MealsRepository mealsRepository;
-    private List<Meal> meals;
+    private static List<Meal> meals;
 
     private MealsRepository() {
         this.meals = Arrays.asList(
@@ -36,8 +38,20 @@ public class MealsRepository {
         return meals;
     }
 
-    //добавит новый объект еды в список
-    public void setMealInList(Meal meal) {
+    public static void createNewMeal(Meal meal) {
         meals.add(meal);
     }
-}
+
+    public static void updateMeal(Meal meal) {
+        meals.add(meal);
+    }
+
+    public static void delete(int id) {
+        List<MealTo> list= MealsUtil.mealToExcessList(MealsRepository.getInstance().getMeals(), 2000);
+        for (MealTo mealTo: list) {
+            if (mealTo.getId() == id){
+                list.remove(mealTo);
+            }
+        }
+        }
+    }

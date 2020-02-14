@@ -15,19 +15,24 @@
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
+<a href="meals?action=create">Add Meal</a>
 <hr>
 <h2>Meals</h2>
 <table>
     <tr>
+        <th>Id</th>
         <th>Date Time</th>
         <th>Description</th>
         <th>Calories</th>
     </tr>
     <c:forEach items="${mealsToList}" var="meal">
         <tr style="background-color:${meal.excess ? 'greenyellow' : 'red'}">
+            <td>${meal.id}</td>
             <td>${meal.dateTime.format( DateTimeFormatter.ofPattern("dd MM yyyy HH:mm"))}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td><a href="meals?action=update&id=${meal.id}">Update</a> </td>
+            <td><a href="meals?action=delete&id=${meal.id}">Delete</a> </td>
         </tr>
     </c:forEach>
 </table>

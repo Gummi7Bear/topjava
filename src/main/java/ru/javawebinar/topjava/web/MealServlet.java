@@ -20,17 +20,20 @@ public class MealServlet extends HttpServlet {
     private List<MealTo> mealsTo;
 
     @Override
-    public void init() throws ServletException {
-        this.mealsRepository = MealsRepository.getInstance();
-        this.mealsTo = MealsUtil.mealToExcessList(mealsRepository.getMeals(), 2000);
-    }
-
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("redirect to meals");
+        String action = request.getParameter("action");
 
-        request.setAttribute("mealsToList" , mealsTo);
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
-        //  response.sendRedirect("meals.jsp");
+        if (action == null) {
+            log.debug("get meal list");
+            request.setAttribute("mealsToList" , MealsUtil.mealToExcessList(MealsRepository.getInstance().getMeals(), 2000));
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        }
+        else if(action == "delete") {
+            log.debug("delete meal");
+            MealsRepository.delete(Integer.valueOf(request.getParameter("id")));
+            request.setAttribute("mealsToList" , MealsUtil.mealToExcessList(MealsRepository.getInstance().getMeals(), 2000));
+            response.sendRedirect("meals");
+        }
     }
 }
